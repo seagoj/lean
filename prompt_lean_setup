@@ -62,6 +62,17 @@ prompt_lean_git_dirty() {
     command test -n "$(git status --porcelain --ignore-submodules ${umode} 2>/dev/null | head -100)"
 
     (($? == 0)) && echo ' +'
+
+    arrows $(git rev-list --left-right --count HEAD...@'{u}')
+}
+
+arrows() {
+    echo "${@}"
+    setopt localoptions noshwordsplit
+    local arrows left=${1:-0} right=${2:-0}
+
+    (( right > 0 )) && echo '⇣'
+    (( left > 0 )) && echo '⇡'
 }
 
 # displays the exec time of the last command if set threshold was exceeded
